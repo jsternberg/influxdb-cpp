@@ -2,6 +2,7 @@
 #define _INFLUXDB_PROTOCOL_HPP
 
 #include <ostream>
+#include <sstream>
 
 namespace influxdb {
 
@@ -28,6 +29,15 @@ public:
 
   class v1;
 };
+
+template <typename T>
+void protocol::encode(T &writer, const point &pt) const {
+  std::stringstream ss;
+  this->encode(ss, pt);
+
+  std::string s = ss.str();
+  writer.write(s.c_str(), s.size());
+}
 
 class protocol::v1 : public protocol {
 public:

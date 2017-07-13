@@ -3,6 +3,14 @@
 
 namespace influxdb {
 
+void protocol::encode(writer &writer, const point &pt) const {
+  std::stringstream ss;
+  this->encode(ss, pt);
+
+  std::string s = ss.str();
+  writer.write(s.c_str(), s.size());
+}
+
 void protocol::v1::encode(std::ostream &os, const point &pt) const {
   std::stringstream ss;
   ss << pt.name;

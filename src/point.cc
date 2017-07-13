@@ -66,4 +66,15 @@ void field::encode(std::ostream& os, const protocol &protocol) const {
   v->encode(os, protocol);
 }
 
+void point::write_to(writer& writer) const {
+  const protocol& p = writer.protocol();
+  p.encode(writer, *this);
+}
+
+void point::write_to(std::ostream& os) const {
+  // Use the default line protocol.
+  protocol::v1 protocol;
+  protocol.encode(os, *this);
+}
+
 }

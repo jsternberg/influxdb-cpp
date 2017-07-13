@@ -7,6 +7,7 @@
 namespace influxdb {
 
 class protocol;
+class writer;
 
 struct tag {
   tag(const std::string& key, const std::string value) : key(key), value(value) {}
@@ -42,6 +43,9 @@ public:
   std::string name;
   std::vector<tag> tags;
   std::vector<field> fields;
+
+  void write_to(writer &writer) const;
+  void write_to(std::ostream &os) const;
 };
 
 }
