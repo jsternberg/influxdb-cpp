@@ -3,12 +3,16 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(influxdb)
 
-include_directories("${PROJECT_SOURCE_DIR}/include")
+find_package(CURL REQUIRED)
+include_directories(${CURL_INCLUDE_DIRS} "${PROJECT_SOURCE_DIR}/include")
 
 file(GLOB INFLUXDB_HEADERS "include/*.hpp" "include/**/*.hpp")
 set(INFLUXDB_SOURCES
+  src/client.cc
   src/point.cc
   src/protocol.cc
+  src/writer.cc
+  src/http_writer.cc
 )
 
 add_library(influxdb ${INFLUXDB_SOURCES})

@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <sstream>
+#include <type_traits>
 
 namespace influxdb {
 
@@ -19,9 +20,6 @@ public:
 
   void encode(writer &writer, const point &pt) const;
 
-  template <typename T>
-    void encode(T &writer, const point &pt) const;
-
   virtual void encode_field(std::ostream& os, double value) const = 0;
   virtual void encode_field(std::ostream& os, int64_t value) const = 0;
   virtual void encode_field(std::ostream& os, const std::string& value) const = 0;
@@ -29,15 +27,6 @@ public:
 
   class v1;
 };
-
-template <typename T>
-void protocol::encode(T &writer, const point &pt) const {
-  std::stringstream ss;
-  this->encode(ss, pt);
-
-  std::string s = ss.str();
-  writer.write(s.c_str(), s.size());
-}
 
 class protocol::v1 : public protocol {
 public:
